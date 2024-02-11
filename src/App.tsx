@@ -1,29 +1,35 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import { useState } from "react";
 
 function App() {
-  const [result, setResult] = useState({
-    numbers: "0",
+  const [result, setResult] = useState<any>({
+    numbers: "",
+    prevNumbers: "0",
     deeds: "",
   });
 
-  const setResultNumber = (number: any) => {
+  const setResultNumber = (e: any) => {
     if (result.deeds) {
       setResult({
-        numbers: number,
+        numbers: e.target.innerText,
+        prevNumbers: result.prevNumbers,
         deeds: result.deeds,
       });
     } else {
-      setResult((prevResult) => ({
+      setResult((prevResult: any) => ({
         ...prevResult,
-        numbers:
-          prevResult.numbers === "0" ? number : prevResult.numbers + number,
+        prevNumbers:
+          prevResult.numbers || prevResult.prevNumbers === "0"
+            ? e.target.innerText
+            : result.prevNumbers + e.target.innerText,
+        numbers: result.numbers,
       }));
     }
   };
 
   const performOperation = (operation: any) => {
-    setResult((prevResult) => ({
+    setResult((prevResult: any) => ({
       ...prevResult,
       deeds: operation,
     }));
@@ -31,73 +37,81 @@ function App() {
 
   const clearResult = () => {
     setResult({
-      numbers: "0",
+      numbers: "",
       deeds: "",
+      prevNumbers: "0",
     });
   };
 
   const calculateResult = () => {
     switch (result.deeds) {
       case "+":
-        setResult((prevResult) => ({
+        setResult({
           numbers: `${
-            parseFloat(prevResult.numbers) + parseFloat(result.numbers)
+            parseFloat(result.prevNumbers) + parseFloat(result.numbers)
           }`,
           deeds: "",
-        }));
+          prevNumbers: result.prevNumbers,
+        });
         break;
       case "-":
-        setResult((prevResult) => ({
+        setResult({
           numbers: `${
-            parseFloat(prevResult.numbers) - parseFloat(result.numbers)
+            parseFloat(result.prevNumbers) - parseFloat(result.numbers)
           }`,
           deeds: "",
-        }));
+          prevNumbers: "",
+        });
         break;
       case "*":
-        setResult((prevResult) => ({
+        setResult({
           numbers: `${
-            parseFloat(prevResult.numbers) * parseFloat(result.numbers)
+            parseFloat(result.prevNumbers) * parseFloat(result.numbers)
           }`,
           deeds: "",
-        }));
+          prevNumbers: "",
+        });
         break;
       case "/":
-        setResult((prevResult) => ({
+        setResult({
           numbers: `${
-            parseFloat(prevResult.numbers) / parseFloat(result.numbers)
+            parseFloat(result.prevNumbers) / parseFloat(result.numbers)
           }`,
           deeds: "",
-        }));
-        break;
-      default:
+          prevNumbers: "",
+        });
         break;
     }
   };
+
+  console.log("PrevNumbers:", result.prevNumbers);
+  console.log("Numbers:", result.numbers);
 
   return (
     <div>
       <div className="calculator">
         <div className="output">
-          <span className="result">{result.numbers}</span>
+          <span className="result">
+            {Math.floor(result.numbers || result.prevNumbers)}
+          </span>
         </div>
         <div className="buttons">
-          <button onClick={() => setResultNumber("1")}>1</button>
-          <button onClick={() => setResultNumber("2")}>2</button>
-          <button onClick={() => setResultNumber("3")}>3</button>
+          <button onClick={(e) => setResultNumber(e)}>1</button>
+          <button onClick={(e) => setResultNumber(e)}>2</button>
+          <button onClick={(e) => setResultNumber(e)}>3</button>
           <button onClick={() => performOperation("+")}>+</button>
-          <button onClick={() => setResultNumber("4")}>4</button>
-          <button onClick={() => setResultNumber("5")}>5</button>
-          <button onClick={() => setResultNumber("6")}>6</button>
+          <button onClick={(e) => setResultNumber(e)}>4</button>
+          <button onClick={(e) => setResultNumber(e)}>5</button>
+          <button onClick={(e) => setResultNumber(e)}>6</button>
           <button onClick={() => performOperation("-")}>-</button>
-          <button onClick={() => setResultNumber("7")}>7</button>
-          <button onClick={() => setResultNumber("8")}>8</button>
-          <button onClick={() => setResultNumber("9")}>9</button>
+          <button onClick={(e) => setResultNumber(e)}>7</button>
+          <button onClick={(e) => setResultNumber(e)}>8</button>
+          <button onClick={(e) => setResultNumber(e)}>9</button>
           <button onClick={() => performOperation("*")}>*</button>
           <button className="bg-red" onClick={clearResult}>
             C
           </button>
-          <button onClick={() => setResultNumber("0")}>0</button>
+          <button onClick={(e) => setResultNumber(e)}>0</button>
           <button className="bg-green" onClick={calculateResult}>
             =
           </button>
