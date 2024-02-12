@@ -23,18 +23,16 @@ function App() {
           prevResult.numbers || prevResult.prevNumbers === "0"
             ? e.target.innerText
             : result.prevNumbers + e.target.innerText,
-        numbers: result.numbers,
+        numbers: result.numbers + result.numbers,
       }));
     }
   };
-
   const performOperation = (operation: any) => {
     setResult((prevResult: any) => ({
       ...prevResult,
       deeds: operation,
     }));
   };
-
   const clearResult = () => {
     setResult({
       numbers: "",
@@ -42,7 +40,6 @@ function App() {
       prevNumbers: "0",
     });
   };
-
   const calculateResult = () => {
     switch (result.deeds) {
       case "+":
@@ -83,10 +80,8 @@ function App() {
         break;
     }
   };
-
   console.log("PrevNumbers:", result.prevNumbers);
   console.log("Numbers:", result.numbers);
-
   return (
     <div>
       <div className="calculator">
