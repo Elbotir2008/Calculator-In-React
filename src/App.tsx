@@ -11,22 +11,22 @@ function App() {
 
   const setResultNumber = (e: any) => {
     if (result.deeds) {
-      setResult({
-        numbers: e.target.innerText,
+      setResult((prevResult: any) => ({
+        numbers: prevResult.numbers + e.target.innerText,
         prevNumbers: result.prevNumbers,
         deeds: result.deeds,
-      });
+      }));
     } else {
       setResult((prevResult: any) => ({
-        ...prevResult,
         prevNumbers:
           prevResult.numbers || prevResult.prevNumbers === "0"
             ? e.target.innerText
             : result.prevNumbers + e.target.innerText,
-        numbers: result.numbers + result.numbers,
+        numbers: result.numbers,
       }));
     }
   };
+
   const performOperation = (operation: any) => {
     setResult((prevResult: any) => ({
       ...prevResult,
